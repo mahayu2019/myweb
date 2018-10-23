@@ -86,4 +86,4 @@ def blog_with_date(request, year, month):
     context = get_blog_list_common_data(request, blog_all_list)
     context['blog_with_date'] = '%s年%s月' % (year, month)
     
-    return render_to_response('blog_with_date.html', context)
+    #return render_to_response('blog_with_date.html', context)
