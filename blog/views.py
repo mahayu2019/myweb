@@ -64,6 +64,8 @@ def blog_list(request):
 # 具体博文内容
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)  # 根据传入主键值,检索对应内容
+    blog.readed_num += 1  # 增加一次阅读次数
+    blog.save()
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()  # 上一条
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()  # 下一条
     context['blog'] = blog

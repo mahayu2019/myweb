@@ -15,6 +15,7 @@ class Blog(models.Model):
     blog_type = models.ForeignKey(BlogType, on_delete=models.DO_NOTHING)  # 类型,引用外键
     content = RichTextUploadingField()  # 内容
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)  # 作者,调用系统管理用户
+    readed_num = models.IntegerField(default=0)  # 统计文章被浏览的次数
     created_time = models.DateTimeField(auto_now_add=True)  # 发布时间自动获取当前系统时间
     last_updated_time = models.DateTimeField(auto_now_add=True)
 

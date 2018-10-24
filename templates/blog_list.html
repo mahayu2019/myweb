@@ -16,13 +16,14 @@
                     <div class="panel-body">
                         {% for blog in blogs %} {# 当前页有多少文章,循环输出 #}
                             <a href="{% url 'blog_detail' blog.pk %}"><h3>{{ blog.title }}</h3></a>
-
+                            &nbsp;
                             <span class="glyphicon glyphicon-tag"></span>
                             <a href="{% url 'blog_with_type' blog.blog_type_id %}">{{ blog.blog_type }}</a>
-
+                            &nbsp;
                             <span class="glyphicon glyphicon-time"></span>
                             {{ blog.created_time|date:"Y-m-d" }}
-
+                            &nbsp;
+                            阅读:{{ blog.readed_num }}
 
                             <p>{{ blog.content|striptags|truncatechars:50 }}</p>
                         {% empty %}
