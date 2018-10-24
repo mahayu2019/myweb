@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response, get_object_or_404
-from .models import BlogType, Blog, ReadNum
+from .models import BlogType, Blog
 from django.core.paginator import Paginator  # 分页器
 from django.conf import settings  # 引用配置文件
 from django.db.models import Count
@@ -65,7 +65,9 @@ def blog_list(request):
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)  # 根据传入主键值,检索对应内容
     if not request.COOKIES.get('blog_%s_read' % blog_pk):  # 检测cook是否存在,不存在则加1次
-        if ReadNum.objects.filter(blog=blog).count():
+        pass
+    '''
+    if ReadNum.objects.filter(blog=blog).count():
             # 存在记录,阅读数增加1
             readnum = ReadNum.objects.get(blog=blog)
         else:
@@ -74,6 +76,7 @@ def blog_detail(request, blog_pk):
 
         readnum.read_num += 1
         readnum.save()
+    '''
 
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()  # 上一条
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()  # 下一条

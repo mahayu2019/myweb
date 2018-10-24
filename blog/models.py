@@ -19,12 +19,15 @@ class Blog(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)  # 发布时间自动获取当前系统时间
     last_updated_time = models.DateTimeField(auto_now_add=True)
 
+
     # 返回阅读数量的值
+    '''
     def get_read_num(self):
         try:
             return self.readnum.read_num
         except exceptions.ObjectDoesNotExist:  #阅读计数对象不存在则返回0
             return 0
+    '''
 
     def __str__(self):
         return "<Blog %s>" % self.title
@@ -33,8 +36,9 @@ class Blog(models.Model):
     class Meta:
         ordering = ['-created_time']
 
-
+'''
 # 对每篇文章阅读计数
 class ReadNum(models.Model):
     read_num = models.IntegerField(default=0)  # 统计文章被浏览的次数
     blog = models.OneToOneField(Blog, on_delete=models.DO_NOTHING)
+'''
