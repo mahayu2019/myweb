@@ -3,6 +3,8 @@ from .models import BlogType, Blog
 from django.core.paginator import Paginator  # 分页器
 from django.conf import settings  # 引用配置文件
 from django.db.models import Count
+from django.contrib.contenttypes.models import ContentType
+from read_statistics.models import ReadNum
 
 context = {}
 
@@ -65,18 +67,15 @@ def blog_list(request):
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)  # 根据传入主键值,检索对应内容
     if not request.COOKIES.get('blog_%s_read' % blog_pk):  # 检测cook是否存在,不存在则加1次
-        pass
-    '''
-    if ReadNum.objects.filter(blog=blog).count():
+        ct = ContentType.objects.get_for_model(Blog)
+        if ReadNum.objects.filter(content_type=ct, object_id=blog.pk).count():
             # 存在记录,阅读数增加1
-            readnum = ReadNum.objects.get(blog=blog)
+            readnum = ReadNum.objects.get(content_type=ct, object_id=blog.pk)
         else:
             # 不存在记录,关联文章之后计数加1
-            readnum = ReadNum(blog=blog)
-
+            readnum = ReadNum(content_type=ct, object_id=blog.pk)
         readnum.read_num += 1
         readnum.save()
-    '''
 
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()  # 上一条
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()  # 下一条

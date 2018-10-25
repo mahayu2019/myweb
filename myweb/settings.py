@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
+    'read_statistics.apps.ReadStatisticsConfig',
     'ckeditor',  # 富文本编辑器
     'ckeditor_uploader',  # 文本编辑器上传图片插件
 ]

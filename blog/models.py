@@ -2,6 +2,8 @@ from django.db import models
 from django.db.models.fields import exceptions
 from django.contrib.auth.models import User  # 导入后台系统管理用户
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.contenttypes.models import ContentType
+from read_statistics.models import ReadNum
 
 
 class BlogType(models.Model):  # 博客类型,注意必须放置于blog之前,因为有外键调用
@@ -19,15 +21,14 @@ class Blog(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)  # 发布时间自动获取当前系统时间
     last_updated_time = models.DateTimeField(auto_now_add=True)
 
-
     # 返回阅读数量的值
-    '''
     def get_read_num(self):
         try:
-            return self.readnum.read_num
-        except exceptions.ObjectDoesNotExist:  #阅读计数对象不存在则返回0
+            ct = ContentType.objects.get_for_model(Blog)
+            readnum = ReadNum.objects.get(content_type=ct, object_id=self.pk)
+            return readnum.read_num
+        except exceptions.ObjectDoesNotExist:
             return 0
-    '''
 
     def __str__(self):
         return "<Blog %s>" % self.title
@@ -35,10 +36,3 @@ class Blog(models.Model):
     # 按创建时间倒序排列
     class Meta:
         ordering = ['-created_time']
-
-'''
-# 对每篇文章阅读计数
-class ReadNum(models.Model):
-    read_num = models.IntegerField(default=0)  # 统计文章被浏览的次数
-    blog = models.OneToOneField(Blog, on_delete=models.DO_NOTHING)
-'''
