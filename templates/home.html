@@ -11,6 +11,32 @@
 
     <!-- 图表容器 DOM -->
     <div id="container"></div>
+    <h3>今日热门博客</h3>
+    <ul>
+        {% for hot_data in today_hot_data %}
+            <li>
+                <a href="{% url 'blog_detail' hot_data.content_object.pk %}">
+                    {{ hot_data.content_object.title }}
+                </a>
+                ({{ hot_data.read_num }})
+            </li>
+        {% empty %}
+            <li>暂无热门</li>
+        {% endfor %}
+    </ul>
+    <h3>昨日热门博客</h3>
+    <ul>
+        {% for hot_data in yesterday_hot_data %}
+            <li>
+                <a href="{% url 'blog_detail' hot_data.content_object.pk %}">
+                    {{ hot_data.content_object.title }}
+                </a>
+                ({{ hot_data.read_num }})
+            </li>
+        {% empty %}
+            <li>暂无热门</li>
+        {% endfor %}
+    </ul>
     <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
     <script>
         // 图表配置
@@ -20,7 +46,7 @@
             xAxis: {
                 categories: {{ dates|safe }},   // x 轴分类
                 tickmarkPlacement: 'on',
-
+                title: {text: "近7天阅读量"}
             },
             yAxis: {
                 title: {text: null},               // y 轴标题

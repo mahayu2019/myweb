@@ -31,7 +31,6 @@ def get_blog_list_common_data(request, blog_all_list):
     # 获取每个分类的对应数量
     blog_types_list = BlogType.objects.annotate(blog_count=Count('blog'))  # 下部注释部分代码与此等价
 
-
     # 按日期分类统计
     blog_dates = Blog.objects.dates('created_time', 'month', order="DESC")
     blog_dates_dict = {}
