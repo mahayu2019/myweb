@@ -24,7 +24,7 @@ class ReadNumExpandMethod():
 
 
 class ReadDetail(models.Model):
-    date = models.DateTimeField(default=timezone.now)  # 阅读日期
+    date = models.DateField(default=timezone.now)  # 阅读日期
     read_num = models.IntegerField(default=0)  # 统计文章被浏览的次数
     content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
     object_id = models.PositiveIntegerField()

@@ -6,5 +6,43 @@
 {% block nav_home_active %}active{% endblock %} {# 首页链接为选中状态时激活 #}
 
 {% block content %}
+
     <h3 class="home-content">欢迎光临本站!</h3>
+
+    <!-- 图表容器 DOM -->
+    <div id="container"></div>
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script>
+        // 图表配置
+        var options = {
+            chart: {type: 'line'},                         //指定图表的类型，默认是折线图（line）
+            title: {text: null},                                // 标题
+            xAxis: {
+                categories: {{ dates|safe }},   // x 轴分类
+                tickmarkPlacement: 'on',
+
+            },
+            yAxis: {
+                title: {text: null},               // y 轴标题
+                labels: {enabled: false},
+                gridLineDashStyle: 'Dash',  //标尺虚线化
+            },
+            series: [{                              // 数据列
+                name: '阅读量',                        // 数据列名
+                data: {{ read_nums|safe }}                     // 数据
+            }],
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {enabled: false},  //去除底部图例文字
+            credits: {enabled: false},  //去除版权信息
+        };
+        // 图表初始化函数
+        var chart = Highcharts.chart('container', options);
+    </script>
+
 {% endblock %}
