@@ -37,6 +37,19 @@
             <li>暂无热门</li>
         {% endfor %}
     </ul>
+    <h3>7天热门博客</h3>
+    <ul>
+        {% for hot_data in hot_data_for_7_days %}
+            <li>
+                <a href="{% url 'blog_detail' hot_data.object_id %}">
+                    xxx
+                </a>
+                ({{ hot_data.read_num_sum }})
+            </li>
+        {% empty %}
+            <li>暂无热门</li>
+        {% endfor %}
+    </ul>
     <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
     <script>
         // 图表配置
