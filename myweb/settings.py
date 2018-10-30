@@ -128,3 +128,11 @@ CKEDITOR_UPLOAD_PATH = 'upload/'
 
 # 自定义参数 -- 每页显示数量
 EACG_PAGE_BLOGS_NUMBER = 8
+
+# 缓存设置
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',  #需要在命令行创建缓存表 py manage.py createcachetable
+    }
+}
