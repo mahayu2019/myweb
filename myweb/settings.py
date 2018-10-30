@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     'read_statistics.apps.ReadStatisticsConfig',
+    'comment.apps.CommentConfig',
     'ckeditor',  # 富文本编辑器
     'ckeditor_uploader',  # 文本编辑器上传图片插件
 ]
@@ -133,6 +134,6 @@ EACG_PAGE_BLOGS_NUMBER = 8
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'my_cache_table',  #需要在命令行创建缓存表 py manage.py createcachetable
+        'LOCATION': 'my_cache_table',  # 需要在命令行创建缓存表 py manage.py createcachetable
     }
 }
