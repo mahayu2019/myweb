@@ -1,10 +1,9 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from .models import BlogType, Blog
 from django.core.paginator import Paginator  # 分页器
 from django.conf import settings  # 引用配置文件
 from django.db.models import Count
 from read_statistics.utils import read_statistics_once_read
-
 
 context = {}
 
@@ -53,7 +52,7 @@ def get_blog_list_common_data(request, blog_all_list):
 def blog_list(request):
     blog_all_list = Blog.objects.all()
     context = get_blog_list_common_data(request, blog_all_list)
-    return render_to_response('blog_list.html', context)
+    return render(request, 'blog_list.html', context)
 
 
 # 具体博文内容
@@ -65,7 +64,7 @@ def blog_detail(request, blog_pk):
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()  # 下一条
     context['blog'] = blog
 
-    response = render_to_response('blog_detail.html', context)  # 响应
+    response = render(request, 'blog_detail.html', context)  # 响应
     response.set_cookie(read_cookie_key, 'true')  # 设置cook标记已读,退出浏览器后失效
     return response
 
@@ -76,7 +75,7 @@ def blog_with_type(request, blog_type_pk):
     blog_all_list = Blog.objects.filter(blog_type=blog_type)
     context = get_blog_list_common_data(request, blog_all_list)
     context['blog_type'] = blog_type
-    return render_to_response('blog_with_type.html', context)
+    return render(request, 'blog_with_type.html', context)
 
 
 # 按日期分类
@@ -84,4 +83,4 @@ def blog_with_date(request, year, month):
     blog_all_list = Blog.objects.filter(created_time__year=year, created_time__month=month)
     context = get_blog_list_common_data(request, blog_all_list)
     context['blog_with_date'] = '%s年%s月' % (year, month)
-    return render_to_response('blog_with_date.html', context)
+    return render(request, 'blog_with_date.html', context)
