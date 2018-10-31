@@ -6,7 +6,8 @@ from django.utils import timezone
 import datetime
 from django.db.models import Sum
 from django.core.cache import cache
-from django.contrib import auth
+from django.contrib import auth  # from django.contrib.auth import login 因为有login同名方法,所以引用上一层
+from django.urls import reverse
 
 
 def get_7_days_hot_blogs():
@@ -44,9 +45,10 @@ def login(request):
     password = request.POST.get('password', '')
 
     user = auth.authenticate(request, username=username, password=password)
+    referer = request.META.get('HTTP_REFERER', reverse('home'))  # 记录登录时所在网址,没有则反向解析到首页,home为url中指定的别名
     if user is not None:
-        auth.login(request, user)
-        return redirect('/')  # 登录成功返回首页
+        auth.login(request, user)  # 注意此处的login是auth里的login
+        return redirect(referer)  # 登录成功返回首页
 
     else:
         return render(request, 'error.html', {'message': '登录失败'})

@@ -24,6 +24,15 @@ div.hot-data {
     margin-top: 2em;
 }
 
+div.comment-area {
+    margin-top: 2em;
+}
+
+h3.comment-area-title {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.4em;
+}
+
 /*列表*/
 ul.blog-types {
     list-style-type: none;
