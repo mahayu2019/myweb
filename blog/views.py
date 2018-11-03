@@ -4,6 +4,8 @@ from django.core.paginator import Paginator  # 分页器
 from django.conf import settings  # 引用配置文件
 from django.db.models import Count
 from read_statistics.utils import read_statistics_once_read
+from comment.models import Comment
+from django.contrib.contenttypes.models import ContentType
 
 context = {}
 
@@ -59,10 +61,13 @@ def blog_list(request):
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)  # 根据传入主键值,检索对应内容
     read_cookie_key = read_statistics_once_read(request, blog)
+    blog_content_type = ContentType.objects.get_for_model(blog)
+    comments = Comment.objects.filter(content_type=blog_content_type, object_id=blog.pk)
 
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()  # 上一条
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()  # 下一条
     context['blog'] = blog
+    context['comments'] = comments
 
     response = render(request, 'blog_detail.html', context)  # 响应
     response.set_cookie(read_cookie_key, 'true')  # 设置cook标记已读,退出浏览器后失效
