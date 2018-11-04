@@ -41,13 +41,15 @@
                 <div class="comment-area">
                     <h3 class="comment-area-title">提交评论</h3>
                     {% if user.is_authenticated %}
-                        当前登录:{{ user.username }}
-                        <form action="{% url 'update_comment' %}" method="post">
+                        <form action="{% url 'update_comment' %}" method="post" style="overflow: hidden">
                             {% csrf_token %} {# csrf验证令牌 #}
-                            <textarea id="comment_text" name="text"></textarea>
+                            <div class="form-group">
+                                <label for="comment_text">{{ user.username }}欢迎评论~</label>
+                                <textarea id="comment_text" name="text" rows="10" class="form-control"></textarea>
+                            </div>
                             <input type="hidden" name="object_id" value="{{ blog.pk }}">
                             <input type="hidden" name="content_type" value="blog">
-                            <input type="submit" value="评论">
+                            <input type="submit" value="发表评论" class="btn btn-primary" style="float: right">
                         </form>
                     {% else %}
                         登录后才能发布评论

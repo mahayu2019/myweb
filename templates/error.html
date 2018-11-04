@@ -6,5 +6,5 @@
 {% block nav_home_active %}active{% endblock %} {# 首页链接为选中状态时激活 #}
 
 {% block content %}
-    {{ message }}
+    {{ message }}<a href="{{ redirect_to }}">返回</a>
 {% endblock %}
