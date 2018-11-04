@@ -8,10 +8,9 @@
 {% block content %}
 
 
-    <form action="{% url 'login' %}" method="post">
+    <form action="{% url 'login' %}" method="POST">
         {% csrf_token %} {# csrf验证令牌 #}
         {{ login_form }}
-
         <input type="submit" value="登录">
     </form>
 {% endblock %}

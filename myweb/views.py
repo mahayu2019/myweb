@@ -43,35 +43,15 @@ def home(request):
 
 
 def login(request):
-    '''
-    username = request.POST.get('username', '')
-    password = request.POST.get('password', '')
-
-    user = auth.authenticate(request, username=username, password=password)
-    referer = request.META.get('HTTP_REFERER', reverse('home'))  # 记录登录时所在网址,没有则反向解析到首页,home为url中指定的别名
-    if user is not None:
-        auth.login(request, user)  # 注意此处的login是auth里的login
-        return redirect(referer)  # 登录成功返回首页
-
-    else:
-        return render(request, 'error.html', {'message': '登录失败'})
-    '''
-
     if request.method == 'POST':
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
-            username = login_form.cleaned_data['username']
-            password = login_form.cleaned_data['password']
-            user = auth.authenticate(request, username=username, password=password)
-            if user is not None:
-                auth.login(request, user)  # 注意此处的login是auth里的login
-                return redirect(request.GET.get('form', reverse('home')))  # 登录成功返回首页
+            user = login_form.cleaned_data['user']
+            auth.login(request, user)  # 注意此处的login是auth里的login
+            return redirect(request.GET.get('from', reverse('home')))  # 反转异常?
 
-            else:
-                pass
-        else:
-            pass
     else:
         login_form = LoginForm()
-        context['login_form'] = login_form
-        return render(request, 'login.html', context)
+
+    context['login_form'] = login_form
+    return render(request, 'login.html', context)
