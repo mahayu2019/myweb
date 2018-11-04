@@ -53,14 +53,7 @@
                         </form>
                     {% else %}
                         登录后才能发布评论
-                        <form action="{% url 'login' %}" method="post">
-                            {% csrf_token %} {# csrf验证令牌 #}
-                            <span>用户名:</span>
-                            <input type="text" name="username">
-                            <span>密码:</span>
-                            <input type="password" name="password">
-                            <input type="submit" value="登录">
-                        </form>
+                        <a href="{% url 'login' %}?form={{ request.get_full_path }}">登录</a>
                     {% endif %}
                 </div>
                 <div class="comment-area">

@@ -8,6 +8,9 @@ from django.db.models import Sum
 from django.core.cache import cache
 from django.contrib import auth  # from django.contrib.auth import login 因为有login同名方法,所以引用上一层
 from django.urls import reverse
+from .forms import LoginForm
+
+context = {}
 
 
 def get_7_days_hot_blogs():
@@ -31,7 +34,6 @@ def home(request):
         hot_blogs_for_7_days = get_7_days_hot_blogs()
         cache.set('hot_blogs_for_7_days', hot_blogs_for_7_days, 3600)  # 获得数据存入缓存,计时单位秒
 
-    context = {}
     context['dates'] = dates
     context['read_nums'] = read_nums
     context['today_hot_data'] = get_today_hot_data(blog_content_type)
@@ -41,6 +43,7 @@ def home(request):
 
 
 def login(request):
+    '''
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
 
@@ -52,3 +55,23 @@ def login(request):
 
     else:
         return render(request, 'error.html', {'message': '登录失败'})
+    '''
+
+    if request.method == 'POST':
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            username = login_form.cleaned_data['username']
+            password = login_form.cleaned_data['password']
+            user = auth.authenticate(request, username=username, password=password)
+            if user is not None:
+                auth.login(request, user)  # 注意此处的login是auth里的login
+                return redirect(request.GET.get('form', reverse('home')))  # 登录成功返回首页
+
+            else:
+                pass
+        else:
+            pass
+    else:
+        login_form = LoginForm()
+        context['login_form'] = login_form
+        return render(request, 'login.html', context)
