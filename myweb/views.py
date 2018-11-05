@@ -76,5 +76,4 @@ def register(request):
         reg_form = RegForm()
 
     context['reg_form'] = reg_form
-    reg_form
-    render(request, 'register.html', context)
+    return render(request, 'register.html', context)
