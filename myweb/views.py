@@ -8,7 +8,8 @@ from django.db.models import Sum
 from django.core.cache import cache
 from django.contrib import auth  # from django.contrib.auth import login 因为有login同名方法,所以引用上一层
 from django.urls import reverse
-from .forms import LoginForm
+from .forms import LoginForm, RegForm
+from django.contrib.auth.models import User
 
 context = {}
 
@@ -55,3 +56,25 @@ def login(request):
 
     context['login_form'] = login_form
     return render(request, 'login.html', context)
+
+
+def register(request):
+    if request.method == 'POST':
+        reg_form = RegForm(request.POST)
+        if reg_form.is_valid():
+            username = reg_form.cleaned_data['username']
+            email = reg_form.cleaned_data['email']
+            password = reg_form.cleaned_data['password']
+            # 创建用户
+            user = User.objects.create_user(username, email, password)
+            user.save()
+            # 登录用户
+            user = auth.authenticate(username=username, password=password)
+            auth.login(request, user)
+            return redirect(request.GET.get('form', reverse('home')))
+    else:
+        reg_form = RegForm()
+
+    context['reg_form'] = reg_form
+    reg_form
+    render(request, 'register.html', context)
